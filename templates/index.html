@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube to MP3 Converter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube to MP3 Converter</h1>
+        <form action="/" method="post">
+            <label for="video_url">URL do vídeo do YouTube:</label><br>
+            <input type="text" id="video_url" name="video_url" placeholder="Insira a URL do vídeo"><br>
+            <input type="submit" value="Converter" class="submit-button">
+        </form>
+
+        <h2>Arquivos Convertidos</h2>
+        <ul>
+            {% for file in files %}
+                <li>{{ file.original_name }} - <a href="{{ url_for('static', filename='downloads/' + file.modified_name) }}" class="download-link">Baixar</a></li>
+            {% endfor %}
+        </ul>
+
+        <form action="/clear_files" method="post">
+            <input type="submit" value="Limpar Arquivos Baixados" class="clear-button">
+        </form>
+
+        <form action="/clear_table" method="post">
+            <input type="submit" value="Limpar Tabela do Banco de Dados" class="clear-button">
+        </form>
+
+        {% if message %}
+            <p>{{ message }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
