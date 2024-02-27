@@ -5,7 +5,6 @@ import yt_dlp
 import subprocess
 import sqlite3
 from flask import Flask, render_template, request, redirect, url_for
-import re
 
 app = Flask(__name__)
 
@@ -26,37 +25,50 @@ def generate_random_filename(length=10):
     letters_and_digits = string.ascii_letters + string.digits
     return ''.join(random.choice(letters_and_digits) for i in range(length))
 
-def download_convert_rename_and_save_to_db(url):
+"""
+@app.route('/download', methods=['POST'])
+def download():
+    url = request.form['url']
     ydl_opts = {
         'format': 'bestaudio/best',
-        'outtmpl': 'static/downloads/%(title)s.%(ext)s',
+        'outtmpl': 'downloads/%(title)s.%(ext)s',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
             'preferredquality': '192',
         }],
     }
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        info_dict = ydl.extract_info(url, download=True)
+        title = info_dict['title']
+        file_name = title + '.mp3'
+        audio = Audio(title=title, url=url, file_name=file_name)
+        db.session.add(audio)
+        db.session.commit()
+        return redirect(url_for('index'))
+
+"""
+
+def download_convert_rename_and_save_to_db(url):
+    ydl_opts = {
+        'format': 'bestaudio/best',
+        'extractaudio': True,
+        'audioformat': 'mp3',
+        'outtmpl': 'static/downloads/%(title)s.%(ext)s',  # Salva na pasta "static/downloads"
+    }
     
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info_dict = ydl.extract_info(url, download=True)
-        mp3_filename = info_dict['title'] + '.mp3'
+        filename = ydl.prepare_filename(info_dict)
         
-        return confirmation(mp3_filename, info_dict)
-
-def clean_filename(filename):
-    # Remove caracteres não desejados e substitui espaços por underscores
-    cleaned_filename = re.sub(r'[^\w\s]', '', filename).replace(' ', '_')
-    return cleaned_filename
-
-def confirmation(mp3_filename, info_dict):
-    # Verifica se o arquivo original existe
-    return mp3_filename
-    """
-    if os.path.exists(mp3_filename):
-        # Limpar o nome do arquivo
-        # cleaned_filename = clean_filename(info_dict['title'])
+        # Converter para MP3 usando FFmpeg
+        mp3_filename = filename[:-4] + '.mp3'
+        subprocess.run(['ffmpeg', '-i', filename, '-vn', '-ar', '44100', '-ac', '2', '-ab', '192k', '-f', 'mp3', mp3_filename], check=True)
         
-        # Renomear o arquivo MP3 com o novo nome limpo
+        # Excluir o arquivo WebM após a conversão
+        os.remove(filename)
+        
+        # Renomear o arquivo MP3 com um número aleatório de 10 dígitos
         random_name = generate_random_filename()
         new_filename = f"{random_name}.mp3"
         os.rename(mp3_filename, f"static/downloads/{new_filename}")  # Salva na pasta "static/downloads"
@@ -67,11 +79,7 @@ def confirmation(mp3_filename, info_dict):
         conn.commit()
         conn.close()
         
-        return new_filename
-    else:
-        # Se o arquivo original não existir, exibe uma mensagem de erro ou realiza outra ação apropriada
-        return "Erro: O arquivo original não foi encontrado."
-    """
+        return "Sucesso!!!"
 
 def list_files_from_db():
     """Listar os dados do banco de dados."""
@@ -85,7 +93,7 @@ def index():
     if request.method == 'POST':
         video_url = request.form['video_url']
         new_filename = download_convert_rename_and_save_to_db(video_url)
-        return render_template('index.html', files=list_files_from_db(), message="Arquivo convertido para MP3 e salvo como: " + new_filename)
+        return render_template('index.html', files=list_files_from_db(), message="Arquivo convertido para MP3 e salvo com " + new_filename)
     else:
         return render_template('index.html', files=list_files_from_db())
 
