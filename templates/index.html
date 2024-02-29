@@ -1,38 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube to MP3 Converter</title>
+    <title>Lista de Reprodução</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>YouTube to MP3 Converter</h1>
-        <form action="/" method="post">
-            <label for="video_url">URL do vídeo do YouTube:</label><br>
-            <input type="text" id="video_url" name="video_url"><br>
-            <input type="submit" value="Converter">
+    <nav>
+        <h1>Lista de Reprodução</h1>
+        <form action="/download" method="POST">
+            <input type="text" name="url" placeholder="URL do vídeo do YouTube">
+            <button type="submit">Baixar</button>
         </form>
-
-        <h2>Arquivos Convertidos</h2>
+    </nav>
+    <div class="audio-list">
+        <h2>Áudios</h2>
         <ul>
-            {% for file in files %}
-                <li>{{ file.original_name }} - <a href="{{ url_for('static', filename='downloads/' + file.modified_name) }}">Baixar</a></li>
+            {% for audio in audios %}
+            <li class="audio-item">
+                <span class="audio-title">{{ audio.title }}</span>
+                <audio id="audio{{ audio.id }}" preload="auto">
+                    <source src="{{ url_for('play', audio_id=audio.id) }}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <div class="player-controls">
+                    <button class="play" onclick="playAudio({{ audio.id }})">▶️</button>
+                    <button class="pause" onclick="pauseAudio({{ audio.id }})">⏸️</button>
+                    <form action="/editar/{{ audio.id }}" method="POST" class="edit-form">
+                        <input type="text" name="new_title" placeholder="Novo título">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <form action="/excluir/{{ audio.id }}" method="POST">
+                        <button type="submit" class="delete-button">Excluir</button>
+                    </form>
+                </div>
+            </li>
             {% endfor %}
         </ul>
-
-        <form action="/clear_files" method="post">
-            <input type="submit" value="Limpar Arquivos Baixados">
-        </form>
-
-        <form action="/clear_table" method="post">
-            <input type="submit" value="Limpar Tabela do Banco de Dados">
-        </form>
-
-        {% if message %}
-            <p>{{ message }}</p>
-        {% endif %}
     </div>
+    <div class="button-container">
+        <form action="/limpar-downloads" method="POST">
+            <button type="submit" class="clear-button">Limpar Downloads</button>
+        </form>
+        <form action="/limpar-tabela" method="POST">
+            <button type="submit" class="clear-button">Limpar Tabela</button>
+        </form>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

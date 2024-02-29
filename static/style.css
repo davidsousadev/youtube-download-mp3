@@ -1,76 +1,369 @@
-body {
-    font-family: Arial, sans-serif;
+/* Reset CSS */
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
 }
 
-.container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
 }
 
-h1 {
-    color: #333;
+nav {
+    background-color: #333;
+    color: white;
+    padding: 20px 0;
     text-align: center;
 }
 
-form {
-    margin-bottom: 20px;
+nav h1 {
+    margin: 0;
+    font-size: 24px;
 }
 
-form input[type="text"],
-form input[type="submit"] {
-    padding: 10px;
+nav form {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav input[type="text"] {
+    padding: 12px;
+    width: 300px;
+    border: none;
+    border-radius: 25px;
     font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
-    margin-bottom: 10px;
+    outline: none;
 }
 
-input[type="submit"] {
-    background-color: #007bff;
-    color: #fff;
+nav button {
+    padding: 12px 24px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 25px;
     cursor: pointer;
+    margin-left: 10px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
 }
 
-ul {
+nav button:hover {
+    background-color: #45a049;
+}
+
+.audio-list {
+    margin: 20px auto;
+    width: 90%;
+    max-width: 800px;
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.audio-list h2 {
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+.audio-list ul {
     list-style-type: none;
     padding: 0;
 }
 
-li {
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+.audio-list li {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-li a {
+.audio-list li .play-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
     text-decoration: none;
-    color: #333;
+    border-radius: 25px;
+    transition: background-color 0.3s ease;
 }
 
-li a:hover {
-    text-decoration: underline;
+.audio-list li .play-button:hover {
+    background-color: #45a049;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.button-container form {
+    margin: 0 10px;
 }
 
 .clear-button {
-    background-color: #dc3545;
-    color: #fff;
+    padding: 12px 24px;
+    background-color: #f44336;
+    color: white;
     border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
+    border-radius: 25px;
     cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
 }
 
 .clear-button:hover {
-    background-color: #c82333;
+    background-color: #d32f2f;
+}
+
+/* Estilos adicionais para o botão play/pause */
+.player-controls .play-pause {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.player-controls .play-pause:hover {
+    background-color: #45a049;
+}
+
+/* Estilos adicionais para os botões play/pause */
+.player-controls .play,
+.player-controls .pause {
+    padding: 20px;
+    font-size: 24px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.player-controls .play:hover,
+.player-controls .pause:hover {
+    transform: scale(1.2);
+}
+
+/* Estilos adicionais para os botões e campos de edição */
+.edit-form {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.edit-form input[type="text"] {
+    padding: 8px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+.edit-form button {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.edit-form button:hover {
+    background-color: #45a049;
+}
+
+.delete-button {
+    padding: 8px 16px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #d32f2f;
+}
+
+/* Estilos adicionais para a lista de áudios */
+.audio-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.audio-list li {
+    background-color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex; /* Alteração para usar flexbox */
+    align-items: center; /* Centralizar itens verticalmente */
+}
+
+.audio-list li .player-controls {
+    margin-left: auto; /* Move os controles do player para o final */
+}
+
+/* Adicione seus estilos existentes aqui */
+
+/* Estilos adicionais para a lista de áudios e controles do player */
+.audio-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.audio-list .audio-item {
+    background-color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+}
+
+.audio-list .audio-item .audio-title {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.audio-list .audio-item .player-controls {
+    margin-left: auto;
+}
+
+.player-controls .edit-form {
+    display: flex;
+    align-items: center;
+}
+
+.player-controls .edit-form input[type="text"] {
+    padding: 8px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+.player-controls .edit-form button {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.player-controls .edit-form button:hover {
+    background-color: #45a049;
+}
+
+.delete-button {
+    padding: 8px 16px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #d32f2f;
+}
+
+
+/* Estilos para smartphones */
+@media only screen and (max-width: 600px) {
+    nav {
+        padding: 10px 0;
+    }
+
+    nav h1 {
+        font-size: 20px;
+    }
+
+    nav form {
+        flex-direction: column;
+    }
+
+    nav input[type="text"] {
+        width: calc(100% - 24px);
+        margin-bottom: 10px;
+    }
+
+    nav button {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .audio-list {
+        padding: 10px;
+    }
+
+    .audio-list h2 {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    .audio-list li {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .audio-list li .play-button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .button-container {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .button-container form {
+        margin: 5px 0;
+    }
+
+    .clear-button {
+        padding: 10px 20px;
+        font-size: 14px;
+        margin: 5px 0;
+    }
+
+    .edit-form input[type="text"] {
+        width: calc(100% - 90px);
+        margin-right: 5px;
+    }
+
+    .edit-form button {
+        width: auto;
+        margin-right: 0;
+    }
+
+    .delete-button {
+        padding: 8px 16px;
+        font-size: 14px;
+        margin: 5px 0;
+    }
+
+    /* Estilos adicionais para os botões play/pause */
+    .player-controls .play,
+    .player-controls .pause {
+        padding: 12px;
+        font-size: 20px;
+    }
 }

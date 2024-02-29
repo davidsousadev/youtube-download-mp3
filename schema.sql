@@ -1,5 +1,0 @@
-CREATE TABLE IF NOT EXISTS files (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    original_name TEXT NOT NULL,
-    modified_name TEXT NOT NULL
-);
